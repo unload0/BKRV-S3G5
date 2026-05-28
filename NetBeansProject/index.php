@@ -10,7 +10,12 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edi
     </head>
     <body>
         <?php
-        echo "<h1>hello</h1>";
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        
+        include 'PageHeader.php';
+        include 'HomePage.php';
         ?>
     </body>
 </html>
