@@ -15,12 +15,13 @@ CREATE TABLE dbProj_books
   title             VARCHAR(255) NOT NULL,
   author_name       VARCHAR(255) NOT NULL,
   short_description VARCHAR(500) NOT NULL,
+  category          VARCHAR(500) NULL    ,
   image_url         VARCHAR(255) NULL    ,
   media_url         VARCHAR(255) NULL    ,
   publish_date      DATETIME     NULL    ,
   PRIMARY KEY (book_id),
 
-  FULLTEXT KEY fx_search_idx (title, author_name, short_description)
+  FULLTEXT KEY fx_search_idx (title, author_name, short_description, category)
 ) ENGINE=InnoDB;
 
 CREATE TABLE dbProj_comments_ratings
