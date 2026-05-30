@@ -163,7 +163,7 @@ function buildPaginationUrl($page_num, $search, $cat) {
                             </div>
                         <?php endif; ?>
 
-                        <a href="book_details.php?id=<?php echo $row['book_id']; ?>" class="hp-view-more-btn">View More & Comments</a>
+                        <a href="BookComments.php?id=<?php echo $row['book_id']; ?>" class="hp-view-more-btn">View More & Comments</a>
                     </div>
                 </div>
                 <?php
