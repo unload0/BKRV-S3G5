@@ -6,16 +6,17 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edi
 <html>
     <head>
         <meta charset="UTF-8">
-        <title></title>
+        <title>BKRV - S3G5</title>
+        <link rel="stylesheet" href="MainStyles.css">
     </head>
     <body>
         <?php
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
-        
-        include 'PageHeader.php';
-        include 'HomePage.php';
+
+        include 'login.php';
+//        include 'PageHeader.php';
         ?>
     </body>
 </html>

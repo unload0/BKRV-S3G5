@@ -1,0 +1,130 @@
+.hp-container {
+    width: 80%;
+    margin: 20px auto;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+}
+.hp-header {
+    background: #333;
+    color: #fff;
+    padding: 1rem;
+    border-radius: 5px;
+}
+.hp-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.hp-nav a {
+    color: #fff;
+    text-decoration: none;
+    margin-right: 15px;
+}
+.hp-search-container {
+    background: #fff;
+    padding: 15px;
+    margin: 20px 0;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+.hp-search-container input[type="text"] {
+    width: 70%;
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.hp-search-container button {
+    padding: 8px 15px;
+    font-size: 16px;
+    cursor: pointer;
+    background: #333;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+}
+.hp-book-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+}
+.hp-book-card {
+    background: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    display: flex;
+    gap: 20px;
+}
+.hp-book-image {
+    max-width: 150px;
+    max-height: 220px;
+    object-fit: cover;
+    border-radius: 3px;
+}
+.hp-book-details {
+    flex: 1;
+}
+.hp-book-title {
+    margin-top: 0;
+    color: #222;
+}
+.hp-meta-info {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 10px;
+}
+.hp-view-more-btn {
+    display: inline-block;
+    background: #007BFF;
+    color: white;
+    padding: 8px 15px;
+    text-decoration: none;
+    border-radius: 3px;
+    margin-top: 10px;
+}
+.hp-view-more-btn:hover {
+    background: #0056b3;
+}
+.hp-media-link {
+    margin-top: 10px;
+    font-size: 0.9rem;
+}
+.hp-pagination {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    padding: 0;
+    margin: 30px 0;
+}
+.hp-pagination li {
+    margin: 0 4px;
+}
+.hp-pagination a, .hp-pagination span {
+    display: block;
+    padding: 8px 14px;
+    text-decoration: none;
+    color: #007BFF;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+.hp-pagination a:hover {
+    background-color: #f5f5f5;
+}
+.hp-pagination .active span {
+    background-color: #007BFF;
+    color: white;
+    border-color: #007BFF;
+}
+.hp-pagination .disabled span {
+    color: #ccc;
+    pointer-events: none;
+    background-color: #fafafa;
+}
+.hp-clear-btn {
+    font-size: 0.85rem;
+    color: #dc3545;
+    text-decoration: none;
+    margin-left: 10px;
+}

@@ -1,5 +1,10 @@
 <?php
 require_once 'dbconn.php';
+include 'PageHeader.php';
+
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 $pagination = 3;
 
@@ -58,9 +63,9 @@ $offset = ($page - 1) * $pagination;
 
 $query = "SELECT b.book_id, b.title, b.author_name, b.short_description, b.image_url, b.media_url, b.publish_date, b.category, u.username 
           FROM dbProj_books b
-          LEFT JOIN dbProj_users u ON b.creator_id = u.user_id" 
-          . $where_sql . 
-          " ORDER BY b.publish_date DESC
+          LEFT JOIN dbProj_users u ON b.creator_id = u.user_id"
+        . $where_sql .
+        " ORDER BY b.publish_date DESC
           LIMIT ? OFFSET ?";
 
 $stmt = mysqli_prepare($conn, $query);
@@ -80,144 +85,14 @@ if ($stmt) {
 
 function buildPaginationUrl($page_num, $search, $cat) {
     $query_args = ['page' => $page_num];
-    if (!empty($search)) $query_args['query'] = $search;
-    if (!empty($cat)) $query_args['cat'] = $cat;
+    if (!empty($search))
+        $query_args['query'] = $search;
+    if (!empty($cat))
+        $query_args['cat'] = $cat;
     return '?' . http_build_query($query_args);
 }
 ?>
 
-<style>
-    .hp-container {
-        width: 80%;
-        margin: 20px auto;
-        overflow: hidden;
-        font-family: Arial, sans-serif;
-        line-height: 1.6;
-    }
-    .hp-header {
-        background: #333;
-        color: #fff;
-        padding: 1rem;
-        border-radius: 5px;
-    }
-    .hp-nav {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-    .hp-nav a {
-        color: #fff;
-        text-decoration: none;
-        margin-right: 15px;
-    }
-    .hp-search-container {
-        background: #fff;
-        padding: 15px;
-        margin: 20px 0;
-        border-radius: 5px;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
-    .hp-search-container input[type="text"] {
-        width: 70%;
-        padding: 8px;
-        font-size: 16px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-    }
-    .hp-search-container button {
-        padding: 8px 15px;
-        font-size: 16px;
-        cursor: pointer;
-        background: #333;
-        color: #fff;
-        border: none;
-        border-radius: 4px;
-    }
-    .hp-book-list {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 20px;
-    }
-    .hp-book-card {
-        background: #fff;
-        padding: 20px;
-        border-radius: 5px;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        display: flex;
-        gap: 20px;
-    }
-    .hp-book-image {
-        max-width: 150px;
-        max-height: 220px;
-        object-fit: cover;
-        border-radius: 3px;
-    }
-    .hp-book-details {
-        flex: 1;
-    }
-    .hp-book-title {
-        margin-top: 0;
-        color: #222;
-    }
-    .hp-meta-info {
-        font-size: 0.9rem;
-        color: #666;
-        margin-bottom: 10px;
-    }
-    .hp-view-more-btn {
-        display: inline-block;
-        background: #007BFF;
-        color: white;
-        padding: 8px 15px;
-        text-decoration: none;
-        border-radius: 3px;
-        margin-top: 10px;
-    }
-    .hp-view-more-btn:hover {
-        background: #0056b3;
-    }
-    .hp-media-link {
-        margin-top: 10px;
-        font-size: 0.9rem;
-    }
-    .hp-pagination {
-        display: flex;
-        justify-content: center;
-        list-style: none;
-        padding: 0;
-        margin: 30px 0;
-    }
-    .hp-pagination li {
-        margin: 0 4px;
-    }
-    .hp-pagination a, .hp-pagination span {
-        display: block;
-        padding: 8px 14px;
-        text-decoration: none;
-        color: #007BFF;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-    }
-    .hp-pagination a:hover {
-        background-color: #f5f5f5;
-    }
-    .hp-pagination .active span {
-        background-color: #007BFF;
-        color: white;
-        border-color: #007BFF;
-    }
-    .hp-pagination .disabled span {
-        color: #ccc;
-        pointer-events: none;
-        background-color: #fafafa;
-    }
-    .hp-clear-btn {
-        font-size: 0.85rem;
-        color: #dc3545;
-        text-decoration: none;
-        margin-left: 10px;
-    }
-</style>
 
 <div class="hp-container">
 
@@ -231,30 +106,32 @@ function buildPaginationUrl($page_num, $search, $cat) {
             <a href="?cat=Astronomy" style="margin-right: 15px; color: #007BFF; text-decoration: none; font-weight: <?php echo ($category_filter === 'Astronomy') ? 'bold' : '500'; ?>;">Astronomy</a>
             <a href="?cat=Culinary" style="margin-right: 15px; color: #007BFF; text-decoration: none; font-weight: <?php echo ($category_filter === 'Culinary') ? 'bold' : '500'; ?>;">Culinary</a>
             <a href="?cat=Computer Science" style="color: #007BFF; text-decoration: none; font-weight: <?php echo ($category_filter === 'Computer Science') ? 'bold' : '500'; ?>;">Computer Science</a>
-            
+
             <?php if (!empty($search_query) || !empty($category_filter)): ?>
                 <a href="?" class="hp-clear-btn">❌ Clear Filters</a>
             <?php endif; ?>
         </div>
 
         <form action="" method="GET">
-            <?php if(!empty($category_filter)): ?>
+            <?php if (!empty($category_filter)): ?>
                 <input type="hidden" name="cat" value="<?php echo htmlspecialchars($category_filter); ?>">
             <?php endif; ?>
             <input type="text" name="query" placeholder="Search by title or author..." value="<?php echo htmlspecialchars($search_query); ?>">
             <button type="submit">Search</button>
         </form>
-        <br><a href="AdvancedSearchPage">Advanced Search</a>
+        <br><a href="AdvancedSearchPage.php">Advanced Search</a>
     </div>
 
-    <?php if(!empty($search_query) || !empty($category_filter)): ?>
+    <?php if (!empty($search_query) || !empty($category_filter)): ?>
         <p style="color: #666; font-style: italic;">
             Showing results for: 
-            <?php 
-                $status = [];
-                if(!empty($category_filter)) $status[] = "Category: <strong>".htmlspecialchars($category_filter)."</strong>";
-                if(!empty($search_query)) $status[] = "Keyword: <strong>".htmlspecialchars($search_query)."</strong>";
-                echo implode(" & ", $status);
+            <?php
+            $status = [];
+            if (!empty($category_filter))
+                $status[] = "Category: <strong>" . htmlspecialchars($category_filter) . "</strong>";
+            if (!empty($search_query))
+                $status[] = "Keyword: <strong>" . htmlspecialchars($search_query) . "</strong>";
+            echo implode(" & ", $status);
             ?>
         </p>
     <?php endif; ?>
