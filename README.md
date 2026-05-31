@@ -8,6 +8,8 @@ BKRV short for "Book Review" is a webpage that allows people to rate and give th
 
 Clone the repository, then use NetBeans to open the project folder **NetBeansProject**
 
-Copy & paste **dbconn.php.template**, rename it to **dbconn.php** and fill your login in
+Create **dbconn.php** file.
+
+Copy & paste **dbconn.php.template** content to **dbconn.php file** then fill your login information.
 
 <img width="598" height="459" alt="image" src="https://github.com/user-attachments/assets/fd73df01-f971-4e3f-b281-db20d8b223a5" />
