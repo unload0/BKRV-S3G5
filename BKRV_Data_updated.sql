@@ -3,9 +3,13 @@
 -- ---------------------------------------------------------
 SET FOREIGN_KEY_CHECKS = 0;
 
-TRUNCATE TABLE dbProj_comments_ratings;
-TRUNCATE TABLE dbProj_books;
-TRUNCATE TABLE dbProj_users;
+DELETE FROM dbProj_comments_ratings;
+DELETE FROM dbProj_books;
+DELETE FROM dbProj_users;
+
+ALTER TABLE dbProj_comments_ratings AUTO_INCREMENT = 1;
+ALTER TABLE dbProj_books AUTO_INCREMENT = 1;
+ALTER TABLE dbProj_users AUTO_INCREMENT = 1;
 
 SET FOREIGN_KEY_CHECKS = 1;
 
@@ -259,4 +263,4 @@ VALUES
 
 (43,7,4.0,'Interesting social commentary.'),
 
-(44,4,4.5,'Very detailed biography.');
+(43,4,4.5,'Very detailed biography.');
