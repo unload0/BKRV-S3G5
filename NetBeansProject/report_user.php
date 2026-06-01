@@ -1,10 +1,10 @@
 <?php
-require_once 'db.php';
-require_once 'header.php';
+require_once 'dbconn.php';
+include 'PageHeader.php';
 
-// Fetch all users to populate the dropdown
-$userStmt = $pdo->query("SELECT user_id, username FROM dbProj_users ORDER BY username ASC");
-$users = $userStmt->fetchAll();
+// Fetch all users to populate the dropdown (MySQLi style)
+$userResult = $conn->query("SELECT user_id, username FROM dbProj_users ORDER BY username ASC");
+$users = $userResult->fetch_all(MYSQLI_ASSOC);
 
 // Check if a user was selected
 $selectedUserId = isset($_GET['user_id']) ? (int)$_GET['user_id'] : 0;
@@ -19,28 +19,28 @@ if ($selectedUserId > 0) {
     $offset = ($page - 1) * $limit;
 
     // Count total books for this user
-    $countStmt = $pdo->prepare("SELECT COUNT(*) FROM dbProj_books WHERE creator_id = :user_id");
-    $countStmt->bindValue(':user_id', $selectedUserId, PDO::PARAM_INT);
+    $countStmt = $conn->prepare("SELECT COUNT(*) as total FROM dbProj_books WHERE creator_id = ?");
+    $countStmt->bind_param("i", $selectedUserId); // "i" means integer
     $countStmt->execute();
-    $totalBooks = $countStmt->fetchColumn();
+    $countRes = $countStmt->get_result();
+    $totalRow = $countRes->fetch_assoc();
+    $totalBooks = $totalRow['total'];
     $totalPages = ceil($totalBooks / $limit);
 
     // Fetch books created by this specific user
     $sql = "SELECT book_id, title, category, publish_date 
             FROM dbProj_books 
-            WHERE creator_id = :user_id 
+            WHERE creator_id = ? 
             ORDER BY publish_date DESC 
-            LIMIT :limit OFFSET :offset";
+            LIMIT ? OFFSET ?";
 
-    $stmt = $pdo->prepare($sql);
-    $stmt->bindValue(':user_id', $selectedUserId, PDO::PARAM_INT);
-    $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
-    $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("iii", $selectedUserId, $limit, $offset); // "iii" = integer, integer, integer
     $stmt->execute();
-    $userContent = $stmt->fetchAll();
+    $res = $stmt->get_result();
+    $userContent = $res->fetch_all(MYSQLI_ASSOC);
 }
 ?>
-
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2>Content by User Report</h2>
@@ -114,4 +114,4 @@ if ($selectedUserId > 0) {
     <?php endif; ?>
 </div>
 
-<?php require_once 'footer.php'; ?>
+<?php // require_once 'footer.php'; ?>

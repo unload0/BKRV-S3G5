@@ -1,6 +1,6 @@
 <?php
-require_once 'db.php';
-require_once 'header.php';
+require_once 'dbconn.php';
+include 'PageHeader.php';
 ?>
 
 <div class="container mt-5">
@@ -27,4 +27,4 @@ require_once 'header.php';
     </div>
 </div>
 
-<?php require_once 'footer.php'; ?>
+<?php // require_once 'footer.php'; ?>

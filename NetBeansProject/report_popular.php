@@ -1,6 +1,6 @@
 <?php
-require_once 'db.php';
-require_once 'header.php';
+require_once 'dbconn.php';
+include 'PageHeader.php';
 
 // Set default dates if the form hasn't been submitted yet
 $startDateRaw = isset($_GET['start_date']) ? $_GET['start_date'] : date('Y-m-d', strtotime('-1 month'));
@@ -16,12 +16,13 @@ if ($page < 1) $page = 1;
 $offset = ($page - 1) * $limit;
 
 // Count total books for pagination
-$countSql = "SELECT COUNT(*) FROM dbProj_books WHERE publish_date BETWEEN :start_date AND :end_date";
-$countStmt = $pdo->prepare($countSql);
-$countStmt->bindValue(':start_date', $startDate);
-$countStmt->bindValue(':end_date', $endDate);
+$countSql = "SELECT COUNT(*) as total FROM dbProj_books WHERE publish_date BETWEEN ? AND ?";
+$countStmt = $conn->prepare($countSql);
+$countStmt->bind_param("ss", $startDate, $endDate); // "ss" means two strings
 $countStmt->execute();
-$totalBooks = $countStmt->fetchColumn();
+$countResult = $countStmt->get_result();
+$totalRow = $countResult->fetch_assoc();
+$totalBooks = $totalRow['total'];
 $totalPages = ceil($totalBooks / $limit);
 
 // Fetch books, count reviews, and calculate average rating
@@ -30,18 +31,16 @@ $sql = "SELECT b.book_id, b.title, b.author_name,
                COALESCE(AVG(c.rating), 0) as average_rating 
         FROM dbProj_books b
         LEFT JOIN dbProj_comments_ratings c ON b.book_id = c.book_id
-        WHERE b.publish_date BETWEEN :start_date AND :end_date
+        WHERE b.publish_date BETWEEN ? AND ?
         GROUP BY b.book_id
         ORDER BY average_rating DESC, total_reviews DESC 
-        LIMIT :limit OFFSET :offset";
+        LIMIT ? OFFSET ?";
 
-$stmt = $pdo->prepare($sql);
-$stmt->bindValue(':start_date', $startDate);
-$stmt->bindValue(':end_date', $endDate);
-$stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
-$stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("ssii", $startDate, $endDate, $limit, $offset); // "ssii" = string, string, integer, integer
 $stmt->execute();
-$books = $stmt->fetchAll();
+$result = $stmt->get_result();
+$books = $result->fetch_all(MYSQLI_ASSOC);
 ?>
 
 <div class="container mt-4">
@@ -115,4 +114,4 @@ $books = $stmt->fetchAll();
     <?php endif; ?>
 </div>
 
-<?php require_once 'footer.php'; ?>
+<?php // require_once 'footer.php'; ?>
