@@ -6,7 +6,7 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-$pagination = 3;
+$pagination = 10;
 
 $page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int) $_GET['page'] : 1;
 if ($page < 1) {
