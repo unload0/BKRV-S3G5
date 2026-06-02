@@ -22,7 +22,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
                 <?php if ($_SESSION['user_role'] == 'Admin'): ?>
                     <a href="AdminPage.php" style="margin-left:15px; color:#dc3545;">Admin Page</a>
-                    <a href="AdminReportingPage.php" style="margin-left:15px; color:#dc3545;">Reporting Page</a>
+                    <a href="admin_reports.php" style="margin-left:15px; color:#dc3545;">Reporting Page</a>
                 <?php endif; ?>
 
                     <a href="login.php" style="margin-left: 0.5rem; color:#ff0000;">Logout</a>
